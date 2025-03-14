@@ -96,7 +96,7 @@ VIEW_PDF =	okular
 .SUFFIXES:	.1 .3 .pdf
 
 .1.pdf:
-		$(GROFF) $<
+		ps2pdf <($(GROFF) sim.1) $@
 
 .3.pdf:
 		$(GROFF) $<
