@@ -185,7 +185,7 @@ print_line(FILE *f, pts max_line_length) {
 	utf8_box u; clear_utf8_box(&u);
 
 	int len;
-	while (len = fill_ubox(f, &u)) {
+	while ((len = fill_ubox(f, &u)) != 0) {
 		/* take a critical look at what we've got */
 		char u0 = u.text[0];
 		if (u0 == '\n') break;			/* stop on end of line*/

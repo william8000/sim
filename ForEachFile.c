@@ -39,8 +39,8 @@ is_dirstat(const struct stat *fs) {
 
 int
 is_Dirname(const Fchar *Fn) {
-	if (!Fn) return 0;
 	struct stat stb;
+	if (!Fn) return 0;
 	if (LSTAT(Fn, &stb) < 0) return 0;
 	return ((stb.st_mode & S_IFMT) == S_IFDIR);
 }

@@ -22,6 +22,7 @@ fopen_regular_file(const char *fname) {
 
 int
 Open_Stream(const char *fname) {
+	int ok;
 	lex_nl_cnt = 1;
 	lex_tk_cnt = 0;		/* but is raised before the token is delivered,
 				   so effectively *_tk_cnt starts at 1:
@@ -31,7 +32,7 @@ Open_Stream(const char *fname) {
 
 	/* start the lex machine */
 	yyin = fopen_regular_file(fname);
-	int ok = (yyin != 0);
+	ok = (yyin != 0);
 	if (!ok) {
 		/* fake a stream, to simplify the rest of the program */
 		yyin = fopen(NULLFILE, "r");

@@ -8,6 +8,12 @@ Checkers are available for
     C, C++, Java, Pascal, Modula-2, Lisp, Miranda, 8086 assembler, and
     natural language text.
 
+This repository has a copy of Version 3.0.5 with an updated Makefile and
+fixes for some compile warnings.
+
+Feb 2024:
+    - Version 3.0.5
+
 Dec 2017:
     - speed-up
     - 8086 assembler testing added

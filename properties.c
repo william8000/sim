@@ -31,7 +31,7 @@ cvt2bittable(const Token *tl, char bt[]) {
 		int index = Token_To_Int(tl[i]);
 		if (index < 0 || index >= N_REGULAR_TOKENS)
 			Fatal("internal error: bad Token list");
-		bt[index] = cnt++;
+		bt[index] = (char)(cnt++);
 	}
 }
 

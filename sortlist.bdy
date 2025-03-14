@@ -26,7 +26,7 @@ SORT_NAME(struct SORT_STRUCT **l_hook) {
 	struct SORT_STRUCT *q0 = 0, *q1 = 0;	/* starts of the sublists */
 	struct SORT_STRUCT **q_hook[2];		/* append hooks for the lists */
 	q_hook[0] = &q0, q_hook[1] = &q1;
-	int q_cnt = 0;				/* pertinemt sublist pointer */
+	int q_cnt = 0;				/* pertinent sublist pointer */
 
 	while (lst) {
 		/* Detach the head element */

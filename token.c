@@ -107,9 +107,11 @@ size_t2string(size_t s) {
 
 /* only active when the macro Token_Eq() has been made inaccessible */
 #undef	Token_EQ	/* to make it compile when Token_Eq() is accessible */
+#ifdef	lint_test
 int
 Token_EQ(const Token t1, const Token t2) {
 	/* to make sure Token_EQ is indeed called with two Token parameters */
 	return Token_To_Int(t1) == Token_To_Int(t2);
 }
+#endif
 

@@ -27,11 +27,12 @@ void
 Store_In_Token(Token tk) {
 	if (tk_free == tk_size) {
 		/* allocated array is full; try to increase its size */
+		Token *new_array;
 		size_t new_size = tk_size + tk_size/2;
 		if (new_size < tk_free)
 			Fatal("out of address space");
 
-		Token *new_array =
+		new_array =
 			(Token *)Try_Realloc(
 				(char *)Token_Array, sizeof (Token) * new_size
 			);

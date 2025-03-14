@@ -60,13 +60,13 @@ any_uint2string(vlong_uint val) {
 
 const char *	/* transient */
 any_mem_size2string(vlong_uint val) {
-	static char buff[8];
+	static char buff[16];
 	char *res = buff;
 
 	if (val <= 999) {
-		/* 'val' fits in " 999  ", which is a differnt format */
+		/* 'val' fits in " 999  ", which is a different format */
 		/* no rounding needed */
-		sprintf(res, " %3d  ", val);
+		sprintf(res, " %3d  ", (int) val);
 		return res;
 	}
 

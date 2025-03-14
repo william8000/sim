@@ -64,7 +64,7 @@ process_first_byte(utf8_box *u, int byte) {
 	/* processes the first byte of a UTF-8 sequence or a single ASCII char;
 	   returns +1: done, OK; 0: wait for more; -1 done, not OK
 	*/
-	u->_pos = 0; u->text[u->_pos++] = byte; u->text[u->_pos] = '\0';
+	u->_pos = 0; u->text[u->_pos++] = (char)byte; u->text[u->_pos] = '\0';
 
 	/* it must either be an ASCII char or a good leading UTF-8 byte */
 	switch (byte & MARK_MASK) {
@@ -137,7 +137,7 @@ box_utf8(char ch, utf8_box *u) {
 			/* retrieve it from _saved to text */
 			int b =  u->_saved; u->_saved_pending = 0;
 			/* box it */
-			int len = box_utf8(b, u);
+			int len = box_utf8((char)b, u);
 			if (len != 0) {
 				/* the box is done; save the incoming byte */
 				u->_saved = byte; u->_saved_pending = 1;
@@ -160,7 +160,7 @@ box_utf8(char ch, utf8_box *u) {
 	switch (byte & MARK_MASK) {
 	case CONTINUATION_BYTE_MARK:
 		/* a good continuation byte; incorporate it */
-		u->text[u->_pos++] = byte; u->text[u->_pos] = '\0';
+		u->text[u->_pos++] = (char)byte; u->text[u->_pos] = '\0';
 		u->code_point =
 			(u->code_point << 6) | (byte & CONTINUATION_BYTE_VALUE);
 

@@ -6,12 +6,15 @@
 /*	Setting and consulting command line options */
 
 /* Command-line parameters */
+#ifndef __OPTIONS_H__
+#define __OPTIONS_H__
 extern int Min_Run_Size;
 extern int Page_Width;
 extern int Threshold_Percentage;
 extern const char *Output_Name;
 
 extern int Is_Set_Option(int ch);
+#endif
 
 #ifdef	_OPTIONS_A_
 extern int Get_Options(int argc, const char *argv[]);

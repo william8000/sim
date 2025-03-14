@@ -61,7 +61,7 @@ wr_info(const char *s, int v) {
 
 			/* put not thy faith in chars, signed or unsigned */
 			if (isprint(ch)) {
-				wr_char(ch);
+				wr_char((char)ch);
 			}
 			else {
 				switch (ch) {
@@ -71,9 +71,9 @@ wr_info(const char *s, int v) {
 				case '\f': wr_str("\\f"); break;
 				default:
 					wr_char('\\');
-					wr_char(ch / 0100 % 010 + '0');
-					wr_char(ch / 010 % 010 + '0');
-					wr_char(ch / 01 % 010 + '0');
+					wr_char((char)(ch / 0100 % 010 + '0'));
+					wr_char((char)(ch / 010 % 010 + '0'));
+					wr_char((char)(ch / 01 % 010 + '0'));
 					break;
 				}
 			}

@@ -3,7 +3,7 @@
 #	$Id: Makefile,v 2.125 2024-02-07 20:52:34 dick Exp $
 #
 
-VERSION="-DVERSION=\"3.0.5 of 2024-02-07\""	# uncomment for public version
+VERSION="-DVERSION=\"3.0.5-1 of 2025-03-14\""	# uncomment for public version
 
 #	E N T R Y   P O I N T S
 
@@ -42,12 +42,14 @@ help:
 SYSTEM =	UNIX
 
 # Locations
-DIR =		/home/dick
-BINDIR =	$(DIR)/bin.`$(DIR)/bin/arch`
-MAN1DIR =	$(DIR)/man/man1
+PREFIX =	/usr/local
+BINDIR =	$(PREFIX)/bin
+MANDIR =	$(PREFIX)/man
+MAN1DIR =	$(MANDIR)/man1
 
 # Commands
-COPY =		cp -p
+COPY =		install
+#COPY =		cp -p
 EXE =		#
 LEX =		flex
 LN =		ln
@@ -60,33 +62,36 @@ NULLFILE =	/dev/null
 ################################################################
 # For MSDOS + MinGW
 
-SYSTEM =	MSDOS
+#SYSTEM =	MSDOS
 
 # Locations
-DIR =		C:/BIN
-BINDIR =	C:/BIN
-MAN1DIR =	C:/BIN
+#DIR =		C:/BIN
+#BINDIR =	C:/BIN
+#MAN1DIR =	C:/BIN
 
 # File names
-NULLFILE =	nul
+#NULLFILE =	nul
 
 # Commands (cp required, since xcopy cannot handle forward slashes)
-COPY =		cp -p
-EXE =		.exe
-LEX =		flex
-LN =		ln
-ZIP =		zip -o
-GROFF =		man2pdf
+#COPY =		cp -p
+#EXE =		.exe
+#LEX =		flex
+#LN =		ln
+#ZIP =		zip -o
+#GROFF =		man2pdf
 
 ################################################################
 # General, C compilation:
 CC =		gcc -D$(SYSTEM)
+#CC =		gcc -D$(SYSTEM) $(GCC_FULL_WARN)
+#CC =		clang -D$(SYSTEM)
 LINT =		lint -ansi -D$(SYSTEM)
 LINTFLAGS =	-xh
 
 # General, text:
 LATEX =		pdflatex
-VIEW_PDF =	pdfview #		# any PDF viewer will do
+#VIEW_PDF =	pdfview #		# any PDF viewer will do
+VIEW_PDF =	okular
 
 .SUFFIXES:	.1 .3 .pdf
 
@@ -98,11 +103,23 @@ VIEW_PDF =	pdfview #		# any PDF viewer will do
 #	=============== end of ../../lib/sysidf.mk
 
 # Compiling
+#export DEB_BUILD_MAINT_OPTIONS=hardening=+all
+GCC_FULL_WARN	= -Wall -Wpointer-arith -Wcast-qual -Wwrite-strings -ffast-math -fno-unsafe-math-optimizations \
+		-Wdeclaration-after-statement -Wclobbered -Wempty-body -Wignored-qualifiers -Wmissing-parameter-type \
+		-Wmissing-field-initializers -Wold-style-declaration -Wtype-limits -Wuninitialized -Winit-self -Wextra \
+		-Wredundant-decls -Wparentheses -Wunused-parameter -Wunused-variable -Wunused-function -Wunused-value \
+		-Wswitch-default -Wreturn-type -Wlogical-op -Wshadow -Wmissing-variable-declarations -Walloc-zero \
+		-Wcalloc-transposed-args -Wduplicated-branches -Wformat-security -Wformat-y2k -Wnull-dereference \
+		-Wswitch-enum -Wunused-const-variable -Wjump-misses-init -Wstrict-prototypes -Wduplicated-cond \
+		-Wundef -Wunused-macros -Wcast-align -Wpacked -Wmissing-prototypes -Wmissing-declarations -Wnested-externs \
+		-Wbad-function-cast -Wconversion -Wno-sign-conversion
 MEMORY =	-DMEMCHECK -DMEMCLOBBER
-CFLAGS =	$(VERSION) $(MEMORY) -O4 # -Dlint -DLIB # for all db active
+CFLAGS =	$(VERSION) $(MEMORY) -Ofast # $(GCC_FULL_WARN) # -Dlint -DLIB # for all db active
+#CFLAGS =	$(VERSION) $(MEMORY) -O4  $(shell dpkg-buildflags --get CPPFLAGS) $(shell dpkg-buildflags --get CFLAGS) -fPIC
 LIBFLAGS =	#
 LINTFLAGS =	-Dlint_test $(MEMORY) -h# -X
 LOADFLAGS =	-s#			# strip symbol table
+#LOADFLAGS =	-s $(shell dpkg-buildflags --get LDFLAGS) # strip symbol table
 LOADER =	$(CC) $(LOADFLAGS)
 
 # Debugging
@@ -371,59 +388,62 @@ chklat:
 
 # Installation
 install_all:	install			# just a synonym
-install:	$(MAN1DIR)/sim.1 \
-		$(BINDIR)/sim_c$(EXE) \
-		$(BINDIR)/sim_text$(EXE) \
-		$(BINDIR)/sim_c++$(EXE) \
-		$(BINDIR)/sim_java$(EXE) \
-		$(BINDIR)/sim_pasc$(EXE) \
-		$(BINDIR)/sim_m2$(EXE) \
-		$(BINDIR)/sim_lisp$(EXE) \
-		$(BINDIR)/sim_mira$(EXE) \
-		$(BINDIR)/sim_8086$(EXE)
+install:	$(DESTDIR)$(MAN1DIR)/sim.1 \
+		$(DESTDIR)$(BINDIR)/sim_c$(EXE) \
+		$(DESTDIR)$(BINDIR)/sim_text$(EXE) \
+		$(DESTDIR)$(BINDIR)/sim_c++$(EXE) \
+		$(DESTDIR)$(BINDIR)/sim_java$(EXE) \
+		$(DESTDIR)$(BINDIR)/sim_pasc$(EXE) \
+		$(DESTDIR)$(BINDIR)/sim_m2$(EXE) \
+		$(DESTDIR)$(BINDIR)/sim_lisp$(EXE) \
+		$(DESTDIR)$(BINDIR)/sim_mira$(EXE) \
+		$(DESTDIR)$(BINDIR)/sim_8086$(EXE)
 
-$(MAN1D)/sim.1:	sim.1
+$(DESTDIR)$(MAN1DIR)/sim.1:	sim.1
 		$(COPY) sim.1 $@
 
-$(BINDIR)/sim_c$(EXE):	sim_c$(EXE)
+$(DESTDIR)$(BINDIR)/sim_c$(EXE):	sim_c$(EXE)
 		$(COPY) sim_c$(EXE) $@
 
-$(BINDIR)/sim_text$(EXE):	sim_text$(EXE)
+$(DESTDIR)$(BINDIR)/sim_text$(EXE):	sim_text$(EXE)
 		$(COPY) sim_text$(EXE) $@
 
-$(BINDIR)/sim_c++$(EXE):	sim_c++$(EXE)
+$(DESTDIR)$(BINDIR)/sim_c++$(EXE):	sim_c++$(EXE)
 		$(COPY) sim_c++$(EXE) $@
 
-$(BINDIR)/sim_java$(EXE):	sim_java$(EXE)
+$(DESTDIR)$(BINDIR)/sim_java$(EXE):	sim_java$(EXE)
 		$(COPY) sim_java$(EXE) $@
 
-$(BINDIR)/sim_pasc$(EXE):	sim_pasc$(EXE)
+$(DESTDIR)$(BINDIR)/sim_pasc$(EXE):	sim_pasc$(EXE)
 		$(COPY) sim_pasc$(EXE) $@
 
-$(BINDIR)/sim_m2$(EXE):	sim_m2$(EXE)
+$(DESTDIR)$(BINDIR)/sim_m2$(EXE):	sim_m2$(EXE)
 		$(COPY) sim_m2$(EXE) $@
 
-$(BINDIR)/sim_lisp$(EXE):	sim_lisp$(EXE)
+$(DESTDIR)$(BINDIR)/sim_lisp$(EXE):	sim_lisp$(EXE)
 		$(COPY) sim_lisp$(EXE) $@
 
-$(BINDIR)/sim_mira$(EXE):	sim_mira$(EXE)
+$(DESTDIR)$(BINDIR)/sim_mira$(EXE):	sim_mira$(EXE)
 		$(COPY) sim_mira$(EXE) $@
 
-$(BINDIR)/sim_8086$(EXE):	sim_8086$(EXE)
+$(DESTDIR)$(BINDIR)/sim_8086$(EXE):	sim_8086$(EXE)
 		$(COPY) sim_8086$(EXE) $@
 
 # Clean-up
 
-.PHONY:		clean fresh
+.PHONY:		distclean clean fresh
 clean:
 		-rm -f *.o
 		-rm -f $(GEN_GRB)
 		-rm -f $(RES_GRB)
 		-rm -f *.aux *.log *.out
 		-rm -f a.out a.exe sim.txt core mon.out
+		-rm -f $(BINARIES)
 
 fresh:		clean
 		-rm -f *.exe
+
+distclean:	fresh
 
 #	D E P E N D E N C I E S
 

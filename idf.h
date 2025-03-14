@@ -22,8 +22,8 @@
 
 /* the struct for keywords etc. */
 struct idf {
-	char *id_tag;	/* an interesting identifier */
-	Token id_tr;	/* with its one-Token translation */
+	const char *id_tag;	/* an interesting identifier */
+	Token id_tr;		/* with its one-Token translation */
 };
 
 /* public functions */

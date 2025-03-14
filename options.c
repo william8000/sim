@@ -19,7 +19,7 @@ const char *Output_Name;		/* for redirecting the output */
 enum Value_Type {No_Type, Number_Type, String_Type};
 struct option {
 	char op_char;		/* char as in call */
-	char *op_text;		/* explanatory text */
+	const char *op_text;	/* explanatory text */
 	enum Value_Type op_type;
 	void *op_value;
 };
@@ -33,7 +33,7 @@ static const struct option optlist[] = {
 	{'T', "suppress reporting the input files", No_Type, 0},
 	{'p', "output similarity in percentages", No_Type, 0},
 	{'P', "main contributing file to percentages only", No_Type, 0},
-	{'t', "threshold level of percentages",
+	{'t', "set threshold level of percentages to N",
 		Number_Type, &Threshold_Percentage},
 
 	{'e', "compare each file to each file separately", No_Type, 0},
@@ -55,7 +55,7 @@ static const struct option optlist[] = {
 	{'w', "set page width to N", Number_Type, &Page_Width},
 	{'O', "show command line options at start-up", No_Type, 0},
 	{'M', "show memory usage info at close-down", No_Type, 0},
-	{'h', "show avaibale options and stop", No_Type, 0},
+	{'h', "show available options and stop", No_Type, 0},
 	{'v', "show version and subject and stop", No_Type, 0},
 	{'-', "lexical scan output only", No_Type, 0},
 	{0, 0, 0, 0}
@@ -75,8 +75,8 @@ Is_Set_Option(int ch) {
 
 void
 Show_All_Options(void) {
-	fprintf(stderr, "Possible options are:\n");
 	const struct option *op;
+	fprintf(stderr, "Possible options are:\n");
 	for (op = optlist; op->op_char; op++) {
 		if (op->op_char == ' ') {
 			fprintf(stderr, "\n\t\t%s\n", op->op_text);
@@ -94,7 +94,7 @@ Show_All_Options(void) {
 }
 
 static void
-bad_option_exit(char *msg, int c) {
+bad_option_exit(const char *msg, int c) {
 	fprintf(stderr, "%s: ", Program_Name);
 	fprintf(stderr, msg, c);
 	fprintf(stderr, "\n");
@@ -129,6 +129,9 @@ opt_value(const struct option *op, const char *arg, const char *argv[]) {
 		break;
 	case String_Type:
 		*(const char **)op->op_value = string;
+		break;
+	default:
+		/* probably an error */
 		break;
 	}
 
