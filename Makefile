@@ -3,7 +3,7 @@
 #	$Id: Makefile,v 2.125 2024-02-07 20:52:34 dick Exp $
 #
 
-VERSION="-DVERSION=\"3.0.5-1 of 2025-03-14\""	# uncomment for public version
+VERSION="-DVERSION=\"3.0.5-2 of 2025-03-14\""	# uncomment for public version
 
 #	E N T R Y   P O I N T S
 
@@ -220,7 +220,7 @@ test:		sim.res stream.res percentages.res version.res
 
 #	B I N A R I E S
 
-BINARIES =	sim_c$(EXE) sim_c++$(EXE) sim_java$(EXE) sim_pasc$(EXE) \
+BINARIES =	sim_c$(EXE) sim_c++$(EXE) sim_java$(EXE) sim_pasc$(EXE) sim_php$(EXE) \
 		sim_m2$(EXE) sim_lisp$(EXE) sim_mira$(EXE) sim_text$(EXE) \
 		sim_8086$(EXE)
 
@@ -313,6 +313,9 @@ sim_java$(EXE):	$(SIM_SRC) $(PROP_SRC) javalang.l $(LEX_HDR)
 sim_pasc$(EXE):	$(SIM_SRC) $(PROP_SRC) pasclang.l $(LEX_HDR)
 		make GEN_LANG=pasc sim_gen$(EXE)
 
+sim_php$(EXE):	$(SIM_SRC) $(PROP_SRC) phplang.l $(LEX_HDR)
+		make GEN_LANG=php sim_gen$(EXE)
+
 sim_m2$(EXE):	$(SIM_SRC) $(PROP_SRC) m2lang.l $(LEX_HDR)
 		make GEN_LANG=m2 sim_gen$(EXE)
 
@@ -394,6 +397,7 @@ install:	$(DESTDIR)$(MAN1DIR)/sim.1 \
 		$(DESTDIR)$(BINDIR)/sim_c++$(EXE) \
 		$(DESTDIR)$(BINDIR)/sim_java$(EXE) \
 		$(DESTDIR)$(BINDIR)/sim_pasc$(EXE) \
+		$(DESTDIR)$(BINDIR)/sim_php$(EXE) \
 		$(DESTDIR)$(BINDIR)/sim_m2$(EXE) \
 		$(DESTDIR)$(BINDIR)/sim_lisp$(EXE) \
 		$(DESTDIR)$(BINDIR)/sim_mira$(EXE) \
@@ -416,6 +420,9 @@ $(DESTDIR)$(BINDIR)/sim_java$(EXE):	sim_java$(EXE)
 
 $(DESTDIR)$(BINDIR)/sim_pasc$(EXE):	sim_pasc$(EXE)
 		$(COPY) sim_pasc$(EXE) $@
+
+$(DESTDIR)$(BINDIR)/sim_php$(EXE):	sim_php$(EXE)
+		$(COPY) sim_php$(EXE) $@
 
 $(DESTDIR)$(BINDIR)/sim_m2$(EXE):	sim_m2$(EXE)
 		$(COPY) sim_m2$(EXE) $@
