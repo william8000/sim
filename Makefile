@@ -286,47 +286,50 @@ sim_gen.c:	$(GEN_LANG)lang.l
 		$(LEX) -t $(GEN_LANG)lang.l >sim_gen.c
 GEN_GRB +=	sim_gen.c
 
-SIM_GEN_SRC =	$(SIM_SRC) $(PROP_SRC) sim_gen.c
-SIM_GEN_OBJ =	$(SIM_OBJ) $(PROP_OBJ) sim_gen.o
+SIM_GEN_SRC =	$(SIM_SRC) $(PROP_SRC)
+SIM_GEN_OBJ =	$(SIM_OBJ) $(PROP_OBJ)
 
 sim_gen$(EXE):	$(SIM_GEN_OBJ)
 		$(LOADER) $(SIM_GEN_OBJ) -o $@
 		mv sim_gen$(EXE) sim_$(GEN_LANG)$(EXE)
 		rm -f sim_gen.[co]
 
-# The executables:				# using recursive make
+%.c:		%.l $(LEX_HDR)
+		$(LEX) -t $< >$@ || (rm -f $@ ; exit 1)
+
+# The executables:
 
 LEX_HDR:	options.h token.h properties.h idf.h lex.h lang.h
 
-sim_c$(EXE):	$(SIM_SRC) $(PROP_SRC) clang.l $(LEX_HDR)
-		make GEN_LANG=c sim_gen$(EXE)
+sim_c$(EXE):	clang.o $(SIM_GEN_OBJ)
+		$(LOADER) clang.o $(SIM_GEN_OBJ) -o $@
 
-sim_text$(EXE):	$(SIM_SRC) $(PROP_SRC) textlang.l $(LEX_HDR)
-		make GEN_LANG=text sim_gen$(EXE)
+sim_text$(EXE):	textlang.o $(SIM_GEN_OBJ)
+		$(LOADER) textlang.o $(SIM_GEN_OBJ) -o $@
 
-sim_c++$(EXE):	$(SIM_SRC) $(PROP_SRC) c++lang.l $(LEX_HDR)
-		make GEN_LANG=c++ sim_gen$(EXE)
+sim_c++$(EXE):	c++lang.o $(SIM_GEN_OBJ)
+		$(LOADER) c++lang.o $(SIM_GEN_OBJ) -o $@
 
-sim_java$(EXE):	$(SIM_SRC) $(PROP_SRC) javalang.l $(LEX_HDR)
-		make GEN_LANG=java sim_gen$(EXE)
+sim_java$(EXE):	javalang.o $(SIM_GEN_OBJ)
+		$(LOADER) javalang.o $(SIM_GEN_OBJ) -o $@
 
-sim_pasc$(EXE):	$(SIM_SRC) $(PROP_SRC) pasclang.l $(LEX_HDR)
-		make GEN_LANG=pasc sim_gen$(EXE)
+sim_pasc$(EXE):	pasclang.o $(SIM_GEN_OBJ)
+		$(LOADER) pasclang.o $(SIM_GEN_OBJ) -o $@
 
-sim_php$(EXE):	$(SIM_SRC) $(PROP_SRC) phplang.l $(LEX_HDR)
-		make GEN_LANG=php sim_gen$(EXE)
+sim_php$(EXE):	phplang.o $(SIM_GEN_OBJ)
+		$(LOADER) phplang.o $(SIM_GEN_OBJ) -o $@
 
-sim_m2$(EXE):	$(SIM_SRC) $(PROP_SRC) m2lang.l $(LEX_HDR)
-		make GEN_LANG=m2 sim_gen$(EXE)
+sim_m2$(EXE):	m2lang.o $(SIM_GEN_OBJ)
+		$(LOADER) m2lang.o $(SIM_GEN_OBJ) -o $@
 
-sim_lisp$(EXE):	$(SIM_SRC) $(PROP_SRC) lisplang.l $(LEX_HDR)
-		make GEN_LANG=lisp sim_gen$(EXE)
+sim_lisp$(EXE):	lisplang.o $(SIM_GEN_OBJ)
+		$(LOADER) lisplang.o $(SIM_GEN_OBJ) -o $@
 
-sim_mira$(EXE):	$(SIM_SRC) $(PROP_SRC) miralang.l $(LEX_HDR)
-		make GEN_LANG=mira sim_gen$(EXE)
+sim_mira$(EXE):	miralang.o $(SIM_GEN_OBJ)
+		$(LOADER) miralang.o $(SIM_GEN_OBJ) -o $@
 
-sim_8086$(EXE):	$(SIM_SRC) $(PROP_SRC) 8086lang.l $(LEX_HDR)
-		make GEN_LANG=8086 sim_gen$(EXE)
+sim_8086$(EXE):	8086lang.o $(SIM_GEN_OBJ)
+		$(LOADER) 8086lang.o $(SIM_GEN_OBJ) -o $@
 
 
 #	T E S T S
