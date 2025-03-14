@@ -42,6 +42,9 @@ To compile and test, edit the Makefile to fit the local situation, and call:
 This will generate one executable called sim_c, the checker for C, and will
 run two small tests to show sample output.
 
+Run make with only 1 job to avoid interference in the rules for
+building the tokenizers for each language.
+
 To install, examine the Makefile, edit BINDIR and MAN1DIR to sensible paths,
 and call
 
