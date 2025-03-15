@@ -3,7 +3,7 @@
 #	$Id: Makefile,v 2.125 2024-02-07 20:52:34 dick Exp $
 #
 
-VERSION="-DVERSION=\"3.0.5-2 of 2025-03-14\""	# uncomment for public version
+VERSION="-DVERSION=\"3.0.5-3 of 2025-03-15\""	# uncomment for public version
 
 #	E N T R Y   P O I N T S
 

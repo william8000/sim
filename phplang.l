@@ -35,7 +35,10 @@ static const struct idf reserved[] = {
 	{"and",		NORM('A')},
 	{"array",	CTRL('a')},
 	{"as",		CTRL('A')},
-	{"break",	NORM('b')},
+	/*		META used by 'i' items */
+	{"bool",	NORM('b')},
+	{"break",	NORM('B')},
+	/*		CTRL used by 'e' items */
 	{"callable",	NORM('c')},
 	{"case",	NORM('C')},
 	{"catch",	CTRL('c')},
@@ -47,6 +50,7 @@ static const struct idf reserved[] = {
 	{"default",	NORM('D')},
 	{"die",		CTRL('d')},
 	{"do",		CTRL('D')},
+	/*		META and MTCT used by 'e' items */
 	{"echo",	NORM('e')},
 	{"else",	NORM('E')},
 	{"elseif",	CTRL('e')},
@@ -57,11 +61,14 @@ static const struct idf reserved[] = {
 	{"endif",	MTCT('E')},
 	{"endswitch",	META('d')},
 	{"endwhile",	META('D')},
+	{"enum",	CTRL('B')},
 	{"eval",	MTCT('d')},
 	{"exit",	MTCT('D')},
-	{"extends",	NORM('e')},
+	{"extends",	CTRL('b')},
+	{"false",	MTCT('f')},
 	{"final",	NORM('f')},
 	{"finally",	NORM('F')},
+	{"float",	MTCT('F')},
 	{"fn",		CTRL('f')},
 	{"for",		CTRL('F')},
 	{"foreach",	META('f')},
@@ -74,29 +81,42 @@ static const struct idf reserved[] = {
 	{"include_once",CTRL('I')},
 	{"instanceof",	META('i')},
 	{"insteadof",	META('I')},
+	{"int",		META('a')},
 	{"interface",	MTCT('i')},
 	{"isset",	MTCT('I')},
+	{"iterable",	META('A')},
 	{"list",	NORM('l')},
 	{"match",	NORM('m')},
+	{"mixed",	NORM('M')},
 	{"namespace",	NORM('n')},
-	{"new",		NORM('N')},
-	{"or",		NORM('o')},
+	{"never",	NORM('N')},
+	{"new",		CTRL('n')},
+	{"null",	CTRL('N')},
+	{"numeric",	META('n')},
+	{"object",	NORM('o')},
+	{"or",		NORM('O')},
+	{"parent",	META('p')},
 	{"print",	NORM('p')},
 	{"private",	NORM('P')},
 	{"protected",	CTRL('p')},
 	{"public",	CTRL('P')},
 	{"readonly",	NORM('r')},
+	{"resource",	META('r')},
 	{"require",	NORM('R')},
 	{"require_once",CTRL('r')},
 	{"return",	CTRL('R')},
-	{"static",	NORM('s')},
-	{"switch",	NORM('S')},
+	{"self",	NORM('s')},
+	{"static",	NORM('S')},
+	{"string",	CTRL('s')},
+	{"switch",	CTRL('S')},
 	{"throw",	NORM('t')},
 	{"trait",	NORM('T')},
-	{"try",		CTRL('t')},
+	{"true",	CTRL('t')},
+	{"try",		CTRL('T')},
 	{"unset",	NORM('u')},
 	{"use",		NORM('U')},
 	{"var",		NORM('v')},
+	{"void",	NORM('V')},
 	{"while",	NORM('w')},
 	{"xor",		NORM('x')},
 	{"yield",	NORM('y')},
@@ -126,7 +146,8 @@ static const Token Non_Finals[] = {
 	NORM('A'),	/* and */
 	CTRL('a'),	/* array */
 	CTRL('A'),	/* as */
-	NORM('b'),	/* break */
+	NORM('b'),	/* bool */
+	NORM('B'),	/* break */
 	NORM('c'),	/* callable */
 	NORM('C'),	/* case */
 	CTRL('c'),	/* catch */
@@ -148,11 +169,14 @@ static const Token Non_Finals[] = {
 	MTCT('E'),	/* endif */
 	META('d'),	/* endswitch */
 	META('D'),	/* endwhile */
+	CTRL('B'),	/* enum */
 	MTCT('d'),	/* eval */
 	MTCT('D'),	/* exit */
-	NORM('e'),	/* extends */
+	CTRL('b'),	/* extends */
+	MTCT('f'),	/* false */
 	NORM('f'),	/* final */
 	NORM('F'),	/* finally */
+	MTCT('F'),	/* float */
 	CTRL('f'),	/* fn */
 	CTRL('F'),	/* for */
 	META('f'),	/* foreach */
@@ -165,29 +189,42 @@ static const Token Non_Finals[] = {
 	CTRL('I'),	/* include_once */
 	META('i'),	/* instanceof */
 	META('I'),	/* insteadof */
+	META('a'),	/* int */
 	MTCT('i'),	/* interface */
 	MTCT('I'),	/* isset */
+	META('A'),	/* iterable */
 	NORM('l'),	/* list */
 	NORM('m'),	/* match */
+	NORM('M'),	/* mixed */
 	NORM('n'),	/* namespace */
-	NORM('N'),	/* new */
-	NORM('o'),	/* or */
+	NORM('N'),	/* never */
+	CTRL('n'),	/* new */
+	CTRL('N'),	/* null */
+	META('n'),	/* numeric */
+	NORM('o'),	/* object */
+	NORM('O'),	/* or */
+	META('p'),	/* parent */
 	NORM('p'),	/* print */
 	NORM('P'),	/* private */
 	CTRL('p'),	/* protected */
 	CTRL('P'),	/* public */
 	NORM('r'),	/* readonly */
+	META('r'),	/* resource */
 	NORM('R'),	/* require */
 	CTRL('r'),	/* require_once */
 	CTRL('R'),	/* return */
-	NORM('s'),	/* static */
-	NORM('S'),	/* switch */
+	NORM('s'),	/* self */
+	NORM('S'),	/* static */
+	CTRL('s'),	/* string */
+	CTRL('S'),	/* switch */
 	NORM('t'),	/* throw */
 	NORM('T'),	/* trait */
-	CTRL('t'),	/* try */
+	CTRL('t'),	/* true */
+	CTRL('T'),	/* try */
 	NORM('u'),	/* unset */
 	NORM('U'),	/* use */
 	NORM('v'),	/* var */
+	NORM('V'),	/* void */
 	NORM('w'),	/* while */
 	NORM('x'),	/* xor */
 	NORM('y'),	/* yield */
